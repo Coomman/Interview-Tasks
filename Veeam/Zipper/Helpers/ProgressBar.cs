@@ -19,10 +19,13 @@ namespace GZipTest.Helpers
 
         public void Lap()
         {
-            var etaMs = _timer.ElapsedMilliseconds / (double)++_lapNum * (_lapsCount - _lapNum);
+            if (++_lapNum > _lapsCount)
+                throw new InvalidOperationException("Progress is 100%");
+
+            var etaMs = _timer.ElapsedMilliseconds / (double) _lapNum * (_lapsCount - _lapNum);
 
             var eta = $"{TimeSpan.FromMilliseconds(etaMs):hh\\:mm\\:ss\\.fff}";
-            var percentsDone = (int)(_lapNum / (double)_lapsCount * 100);
+            var percentsDone = (int) (_lapNum / (double) _lapsCount * 100);
 
             Show(percentsDone, eta);
         }
@@ -31,6 +34,9 @@ namespace GZipTest.Helpers
         {
             ClearCurrentConsoleLine();
             WriteInfo(percentsDone, eta);
+
+            if (_lapNum == _lapsCount)
+                Console.WriteLine();
         }
         private static void ClearCurrentConsoleLine()
         {

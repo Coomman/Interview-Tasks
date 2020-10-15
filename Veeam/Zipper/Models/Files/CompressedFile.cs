@@ -2,92 +2,52 @@
 using System.Threading;
 
 using GZipTest.Core;
-using GZipTest.Helpers;
 using GZipTest.Models.InputStorage;
-using GZipTest.Models.OutputStorage;
 
 namespace GZipTest.Models.Files
 {
     public class CompressedFile
     {
         private readonly IInputStorage _inputStorage;
-        private readonly IOutputStorage _outputStorage;
+        private readonly ResultFile _resultFile;
+        private readonly Compressor _decompressor;
 
         private CountdownEvent _cdEvent;
-        private readonly ThreadHelper _threadHelper = new ThreadHelper();
 
         public static event Action<int> OnStartProcessing;
-        public static event Action OnEndOfIteration;
-
-        public CompressedFile(IInputStorage inputStorage, IOutputStorage outputStorage)
+        
+        public CompressedFile(IInputStorage inputStorage, ResultFile resultFile, Compressor decompressor)
         {
             _inputStorage = inputStorage;
-            _outputStorage = outputStorage;
+            _resultFile = resultFile;
+            _decompressor = decompressor;
         }
 
         public void Decompress()
         {
             using (_inputStorage)
             {
-                using (_outputStorage)
+                using (_decompressor)
                 {
-                    int clustersCount = _inputStorage.ReadInt();
+                    int chunkCount = _inputStorage.ReadInt();
 
-                    _cdEvent = new CountdownEvent(clustersCount);
-                    ThreadHelper.RunBackgroundThread(WriteDecompressedChunks);
+                    _cdEvent = new CountdownEvent(chunkCount);
+                    ThreadHelper.RunThread(() => _resultFile.WriteChunks(_cdEvent));
 
-                    OnStartProcessing?.Invoke(clustersCount);
-                    for (int i = 0; i < clustersCount; i++)
-                    {
-                        ReadCluster(i);
-                        OnEndOfIteration?.Invoke();
-                    }
+                    OnStartProcessing?.Invoke(chunkCount);
+                    for (int i = 0; i < chunkCount; i++)
+                        _decompressor.AddChunk(ReadChunk(i));
 
                     _cdEvent.Wait();
                 }
             }
         }
 
-        private void ReadCluster(int index)
+        private Chunk ReadChunk(int chunkIndex)
         {
-            _threadHelper.WaitForReading();
+            var data = _inputStorage.ReadBytes(new byte[_inputStorage.ReadInt()]);
 
-            var header = ReadHeader();
-
-            var decompressor = new Compressor(header.Length, index);
-
-            for (int i = 0; i < header.Length; i++)
-            {
-                var chunk = new Chunk { Data = _inputStorage.ReadBytes(new byte[header[i]]), Index = i };
-                ThreadHelper.RunThread(() => decompressor.Decompress(chunk));
-            }
-
-            _threadHelper.StartThread(() => _threadHelper.ReleaseThread(decompressor.GetCluster()));
-        }
-        private int[] ReadHeader()
-        {
-            var header = new int[_inputStorage.ReadInt()];
-
-            for (int i = 0; i < header.Length; i++)
-                header[i] = _inputStorage.ReadInt();
-
-            return header;
-        }
-
-        private void WriteDecompressedChunks() 
-        {
-            while (true)
-            {
-                _threadHelper.WaitForWriting();
-
-                var cluster = _threadHelper.TakeCluster().Data;
-
-                foreach (var chunk in cluster)
-                    _outputStorage.WriteBytes(chunk);
-
-                _cdEvent.Signal();
-                GC.Collect();
-            }
+            return new Chunk {Data = data, Index = chunkIndex};
         }
     }
 }

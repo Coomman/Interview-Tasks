@@ -1,6 +1,4 @@
-﻿using System;
-
-using GZipTest.Core;
+﻿using GZipTest.Core;
 using GZipTest.Helpers;
 using GZipTest.Models.Files;
 
@@ -8,22 +6,12 @@ namespace GZipTest
 {
     internal class EntryPoint
     {
-        private static int Main(string[] query)
+        private static void Main(string[] query)
         {
-            try
-            {
-                AddProgressBar();
+            AddProgressBar();
 
-                var zipper = new Zipper(StorageType.Local, StorageType.Local);
-                zipper.Process(query);
-            }
-            catch (Exception e)
-            {
-                ConsoleColor.Red.WriteLine(e.Message);
-                return 1;
-            }
-
-            return 0;
+            var zipper = new Zipper(StorageType.Local, StorageType.Local);
+            zipper.Process(query);
         }
 
         private static void AddProgressBar()
@@ -31,10 +19,9 @@ namespace GZipTest
             var progressBar = new ProgressBar();
 
             SourceFile.OnStartProcessing += progressBar.Start;
-            SourceFile.OnEndOfIteration += progressBar.Lap;
-
             CompressedFile.OnStartProcessing += progressBar.Start;
-            CompressedFile.OnEndOfIteration += progressBar.Lap;
+
+            ResultFile.OnEndOfIteration += progressBar.Lap;
         }
     }
 }

@@ -1,13 +1,11 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=377e459e_002D564a_002D4732_002D9ed6_002Dae391dcf1dae/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="CompressCr2_WorksCorrectly" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::57EF8AAC-050F-4DC7-805C-0B88336426EF::.NETCoreApp,Version=v3.1::ZipperTests.CompressionTests.CompressCr2_WorksCorrectly&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
+	
+	
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=9b317ba9_002D6788_002D41f8_002Db51a_002Dbdebaa9c9b11/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="FullTest_Cr2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;NUnit3x::57EF8AAC-050F-4DC7-805C-0B88336426EF::.NETCoreApp,Version=v3.1::ZipperTests.CompressionTests.FullTest_Cr2&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;NUnit3x::57EF8AAC-050F-4DC7-805C-0B88336426EF::.NETCoreApp,Version=v3.1::ZipperTests.CompressionTests.FullTest_Zero&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::57EF8AAC-050F-4DC7-805C-0B88336426EF::.NETCoreApp,Version=v3.1::ZipperTests.CompressionTests.FullTest_Mkv&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=Decompressor/@EntryIndexedValue">True</s:Boolean></wpf:ResourceDictionary>

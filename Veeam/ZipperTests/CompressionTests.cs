@@ -53,7 +53,6 @@ namespace ZipperTests
         {
             RunTest(".mkv");
         }
-
         [Test]
         public void FullTest_Zero()
         {
