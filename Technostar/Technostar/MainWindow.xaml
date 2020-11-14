@@ -1,0 +1,61 @@
+﻿<Window x:Class="Technostar.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal" 
+        TextOptions.TextRenderingMode="Auto"        
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        Title="Technostar" Width="1280" Height="720">
+
+    <Grid>
+        <TextBox Name="SearchBox" VerticalAlignment="Top" Height="57"
+                 materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                 Background="Azure" Padding="10 0"
+                 Foreground="Black" FontSize="18" VerticalContentAlignment="Center" Margin="174,151,174,0"
+                 Text="{Binding RecordText, UpdateSourceTrigger=PropertyChanged}">
+        </TextBox>
+
+        <ComboBox
+            materialDesign:TextFieldAssist.HasClearButton="True"
+            materialDesign:HintAssist.Hint="Select a Record"
+
+            Height="50" Margin="218,272,218,0" VerticalAlignment="Top"
+            ItemsSource="{Binding Models}"
+            SelectedItem="{Binding SelectedModel, Mode=TwoWay}"
+            HorizontalContentAlignment="Stretch"
+            FontSize="28" Foreground="Gray"
+
+            SelectionChanged="ComboBox_OnSelectionChanged">
+            
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock FontSize="18" Text="{Binding Path=Content, Mode=TwoWay}" HorizontalAlignment="Left"></TextBlock>
+                        <TextBlock FontSize="18" Text="{Binding Path=TimeStamp, Mode=TwoWay}" HorizontalAlignment="Right"></TextBlock>
+                    </StackPanel>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+
+        <Button
+            Style="{StaticResource MaterialDesignRaisedDarkButton}" Margin="284,401,696,153"
+            Background="Teal" Foreground="BlanchedAlmond" FontSize="40"
+            Height="150" Width="300" Command="{Binding SendCommand}"
+            Content="Send">
+        </Button>
+
+        <Button
+            Style="{StaticResource MaterialDesignRaisedDarkButton}" Margin="699,401,281,153"
+            Background="Teal" Foreground="BlanchedAlmond" FontSize="40"
+            Height="150" Width="300" Command="{Binding ReverseCommand}"
+            Content="Reverse"/>
+    </Grid>
+</Window>
